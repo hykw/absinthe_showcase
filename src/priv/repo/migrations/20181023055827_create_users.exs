@@ -11,5 +11,6 @@ defmodule Showcase.Repo.Migrations.CreateUsers do
       timestamps()
     end
 
+    create unique_index(:users, [:nickname])
   end
 end
