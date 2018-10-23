@@ -1,0 +1,55 @@
+version: "2"
+
+services:
+  showcase_mysql:
+    image: mysql:5.6
+    tty: true
+    container_name: "showcase_mysql"
+
+    build:
+      context: ./containers/mysql
+
+    ports:
+      - "5002:3306"
+
+    networks:
+      showcase_vpcbr:
+        ipv4_address: 10.4.1.2
+
+    environment:
+      MYSQL_ROOT_PASSWORD: "PASSWORD"
+
+
+  showcase:
+    tty: true
+    container_name: "showcase"
+
+    build:
+      context: ./containers/showcase
+      args:
+        USER: ${USER}
+        MYUID: ${MYUID}
+        PORT: 5001
+        ERL_VER: 20.2
+        WORKDIR: "/showcase/src"
+    ports:
+      - "5001:5001"
+    networks:
+      showcase_vpcbr:
+        ipv4_address: 10.4.1.3
+    volumes:
+      - .:/showcase/src
+    depends_on:
+      - showcase_mysql
+    links:
+      - showcase_mysql
+
+
+networks:
+  showcase_vpcbr:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.4.1.0/24
+          gateway: 10.4.1.1
