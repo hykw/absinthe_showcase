@@ -24,7 +24,7 @@ defmodule Showcase.QA.Question do
   @doc false
   def changeset(question, attrs) do
     question
-    |> cast(attrs, [:title, :body])
+    |> cast(attrs, [:title, :body, :user_id])
     |> validate_required([:title, :body, :user_id])
   end
 end

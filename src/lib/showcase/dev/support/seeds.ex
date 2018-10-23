@@ -1,6 +1,7 @@
 defmodule Showcase.Seeds do
   alias Showcase.{
     Accounts,
+    QA,
     Repo
   }
 
@@ -85,21 +86,26 @@ defmodule Showcase.Seeds do
   end
 
   defp insert_question(user, i) do
-    Ecto.build_assoc(user, :questions, %{
-      title: "質問(user_id: #{user.id}) #{i}",
-      body: "本文(user_id: #{user.id}) #{i}"
-    })
-    |> Repo.insert!()
+    {:ok, question} =
+      %{
+        title: "質問(user_id: #{user.id}) #{i}",
+        body: "本文(user_id: #{user.id}) #{i}",
+        user_id: user.id
+      }
+      |> QA.create_question()
+
+    question
   end
 
   defp insert_comment(question, user, range) do
     range
     |> Enum.map(fn i ->
-      Ecto.build_assoc(question, :answers, %{
+      %{
         body: "回答(question_id: #{question.id}) #{i}",
-        user_id: user.id
-      })
-      |> Repo.insert!()
+        user_id: user.id,
+        question_id: question.id
+      }
+      |> QA.create_answer()
     end)
   end
 end
