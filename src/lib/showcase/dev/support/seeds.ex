@@ -1,7 +1,6 @@
 defmodule Showcase.Seeds do
   alias Showcase.{
     Accounts,
-    QA,
     Repo
   }
 
@@ -81,7 +80,7 @@ defmodule Showcase.Seeds do
     insert_question(user, 1)
   end
 
-  defp create_qa(:user3, user) do
+  defp create_qa(:user3, _user) do
     # Do nothing
   end
 
