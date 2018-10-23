@@ -29,11 +29,11 @@ services:
       args:
         USER: ${USER}
         MYUID: ${MYUID}
-        PORT: 5001
+        PORT: 4000
         ERL_VER: 20.2
         WORKDIR: "/showcase/src"
     ports:
-      - "5001:5001"
+      - "5001:4000"
     networks:
       showcase_vpcbr:
         ipv4_address: 10.4.1.3
