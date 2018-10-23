@@ -12,8 +12,8 @@ config :logger, level: :warn
 # Configure your database
 config :showcase, Showcase.Repo,
   adapter: Ecto.Adapters.MySQL,
-  username: "root",
-  password: "",
+  username: "mysqluser",
+  password: "PASSWORD",
   database: "showcase_test",
-  hostname: "localhost",
+  hostname: "showcase_mysql",
   pool: Ecto.Adapters.SQL.Sandbox

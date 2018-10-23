@@ -50,8 +50,8 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :showcase, Showcase.Repo,
   adapter: Ecto.Adapters.MySQL,
-  username: "root",
-  password: "",
+  username: "mysqluser",
+  password: "PASSWORD",
   database: "showcase_dev",
-  hostname: "localhost",
+  hostname: "showcase_mysql",
   pool_size: 10
