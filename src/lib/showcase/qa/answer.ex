@@ -3,6 +3,7 @@ defmodule Showcase.QA.Answer do
   import Ecto.Changeset
 
 
+  @timestamps_opts [usec: Mix.env != :test]
   schema "answers" do
     field :body, :string
     field :user_id, :id

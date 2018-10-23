@@ -3,6 +3,7 @@ defmodule Showcase.Accounts.User do
   import Ecto.Changeset
 
 
+  @timestamps_opts [usec: Mix.env != :test]
   schema "users" do
     field :email, :string
     field :nickname, :string
