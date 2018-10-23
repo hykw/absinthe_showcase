@@ -19,6 +19,17 @@ defmodule ShowcaseWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/" do
+    pipe_through :api
+
+    forward "/api", Absinthe.Plug,
+      schema: ShowcaseWeb.Schema
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: ShowcaseWeb.Schema
+  end
+
+
   # Other scopes may use custom stacks.
   # scope "/api", ShowcaseWeb do
   #   pipe_through :api
