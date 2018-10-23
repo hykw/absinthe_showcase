@@ -11,7 +11,7 @@ defmodule Showcase.Application do
       # Start the Ecto repository
       supervisor(Showcase.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(ShowcaseWeb.Endpoint, []),
+      supervisor(ShowcaseWeb.Endpoint, [])
       # Start your own worker by calling: Showcase.Worker.start_link(arg1, arg2, arg3)
       # worker(Showcase.Worker, [arg1, arg2, arg3]),
     ]

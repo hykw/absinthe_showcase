@@ -6,8 +6,18 @@ defmodule Showcase.AccountsTest do
   describe "users" do
     alias Showcase.Accounts.User
 
-    @valid_attrs %{email: "some email", nickname: "some nickname", permission: 42, plain_password: "some plain_password"}
-    @update_attrs %{email: "some updated email", nickname: "some updated nickname", permission: 43, plain_password: "some updated plain_password"}
+    @valid_attrs %{
+      email: "some email",
+      nickname: "some nickname",
+      permission: 42,
+      plain_password: "some plain_password"
+    }
+    @update_attrs %{
+      email: "some updated email",
+      nickname: "some updated nickname",
+      permission: 43,
+      plain_password: "some updated plain_password"
+    }
     @invalid_attrs %{email: nil, nickname: nil, permission: nil, plain_password: nil}
 
     def user_fixture(attrs \\ %{}) do

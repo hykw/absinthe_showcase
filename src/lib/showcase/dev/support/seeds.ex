@@ -2,7 +2,7 @@ defmodule Showcase.Seeds do
   alias Showcase.{
     Accounts,
     QA,
-    Repo,
+    Repo
   }
 
   def run() do
@@ -18,10 +18,10 @@ defmodule Showcase.Seeds do
       _,
       _
     ] =
-    get_users()
-    |> Enum.map(fn(user) ->
-      Accounts.create_user(user)
-    end)
+      get_users()
+      |> Enum.map(fn user ->
+        Accounts.create_user(user)
+      end)
 
     create_qa(:user1, user1)
     create_qa(:user2, user2)
@@ -34,32 +34,32 @@ defmodule Showcase.Seeds do
         nickname: "Normal1",
         email: "user1@example.jp",
         plain_password: "password1",
-        permission: 0,
+        permission: 0
       },
       %{
         nickname: "Normal2",
         email: "user2@example.jp",
         plain_password: "password2",
-        permission: 0,
+        permission: 0
       },
       %{
         nickname: "Normal3",
         email: "user3@example.jp",
         plain_password: "password3",
-        permission: 0,
+        permission: 0
       },
       %{
         nickname: "Admin1",
         email: "admin1@example.jp",
         plain_password: "password3",
-        permission: 1,
+        permission: 1
       },
       %{
         nickname: "Admin2",
         email: "admin2@example.jp",
         plain_password: "password4",
-        permission: 1,
-      },
+        permission: 1
+      }
     ]
   end
 
@@ -88,20 +88,19 @@ defmodule Showcase.Seeds do
   defp insert_question(user, i) do
     Ecto.build_assoc(user, :questions, %{
       title: "質問(user_id: #{user.id}) #{i}",
-      body: "本文(user_id: #{user.id}) #{i}",
+      body: "本文(user_id: #{user.id}) #{i}"
     })
-    |> Repo.insert!
+    |> Repo.insert!()
   end
 
   defp insert_comment(question, user, range) do
     range
-    |> Enum.map(fn(i) ->
+    |> Enum.map(fn i ->
       Ecto.build_assoc(question, :answers, %{
         body: "回答(question_id: #{question.id}) #{i}",
-        user_id: user.id,
+        user_id: user.id
       })
-      |> Repo.insert!
+      |> Repo.insert!()
     end)
   end
-
 end

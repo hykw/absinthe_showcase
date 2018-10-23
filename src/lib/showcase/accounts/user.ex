@@ -7,15 +7,15 @@ defmodule Showcase.Accounts.User do
     Answer
   }
 
-  @timestamps_opts [usec: Mix.env != :test]
+  @timestamps_opts [usec: Mix.env() != :test]
   schema "users" do
-    field :email, :string
-    field :nickname, :string
-    field :permission, :integer
-    field :plain_password, :string
+    field(:email, :string)
+    field(:nickname, :string)
+    field(:permission, :integer)
+    field(:plain_password, :string)
 
-    has_many :questions, Question
-    has_many :answers, Answer
+    has_many(:questions, Question)
+    has_many(:answers, Answer)
 
     timestamps()
   end

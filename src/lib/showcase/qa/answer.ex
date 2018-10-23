@@ -3,19 +3,19 @@ defmodule Showcase.QA.Answer do
   import Ecto.Changeset
 
   alias Showcase.Accounts.{
-    User,
+    User
   }
 
   alias Showcase.QA.{
-    Question,
+    Question
   }
 
-  @timestamps_opts [usec: Mix.env != :test]
+  @timestamps_opts [usec: Mix.env() != :test]
   schema "answers" do
-    field :body, :string
+    field(:body, :string)
 
-    belongs_to :user, User
-    belongs_to :question, Question
+    belongs_to(:user, User)
+    belongs_to(:question, Question)
 
     timestamps()
   end

@@ -28,8 +28,9 @@ defmodule ShowcaseWeb do
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/showcase_web/templates",
-                        namespace: ShowcaseWeb
+      use Phoenix.View,
+        root: "lib/showcase_web/templates",
+        namespace: ShowcaseWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
