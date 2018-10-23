@@ -2,6 +2,10 @@ defmodule Showcase.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Showcase.QA.{
+    Question,
+    Answer
+  }
 
   @timestamps_opts [usec: Mix.env != :test]
   schema "users" do
@@ -9,6 +13,9 @@ defmodule Showcase.Accounts.User do
     field :nickname, :string
     field :permission, :integer
     field :plain_password, :string
+
+    has_many :questions, Question
+    has_many :answers, Answer
 
     timestamps()
   end
