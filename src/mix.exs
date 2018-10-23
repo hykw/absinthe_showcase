@@ -43,7 +43,8 @@ defmodule Showcase.Mixfile do
       {:cowboy, "~> 1.0"},
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
-      {:dataloader, "~> 1.0"}
+      {:dataloader, "~> 1.0"},
+      {:plug_cowboy, "~> 1.0"}
     ]
   end
 
