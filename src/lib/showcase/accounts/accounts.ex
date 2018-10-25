@@ -21,12 +21,30 @@ defmodule Showcase.Accounts do
     Repo.all(User)
   end
 
-  def list_users(:normal_user) do
-    from(
-      u in User,
-      where: u.permission == 0,
-      order_by: [asc: u.id]
-    )
+  def list_users(:normal_user, args) do
+    query =
+      from(
+        u in User,
+        where: u.permission == 0,
+        order_by: [asc: u.id]
+      )
+
+    Enum.reduce(args, query, fn
+      {_, nil}, query ->
+        query
+
+      {:id, id}, query ->
+        from(
+          q in query,
+          where: q.id == ^id
+        )
+
+      {:nickname, nickname}, query ->
+        from(
+          q in query,
+          where: q.nickname == ^nickname
+        )
+    end)
     |> Repo.all()
   end
 

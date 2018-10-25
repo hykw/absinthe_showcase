@@ -3,7 +3,7 @@ defmodule ShowcaseWeb.Resolvers.Accounts do
     Accounts
   }
 
-  def users(_, _args, _) do
-    {:ok, Accounts.list_users(:normal_user)}
+  def users(_, args, _) do
+    {:ok, Accounts.list_users(:normal_user, args)}
   end
 end

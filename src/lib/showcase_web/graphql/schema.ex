@@ -15,6 +15,8 @@ defmodule ShowcaseWeb.Schema do
     """
 
     field :users, list_of(:user) do
+      arg(:id, :id)
+      arg(:nickname, :string)
       resolve(&Resolvers.Accounts.users/3)
     end
   end

@@ -23,6 +23,11 @@ defmodule ShowcaseWeb.ConnCase do
 
       # The default endpoint for testing
       @endpoint ShowcaseWeb.Endpoint
+
+      def apicall_on_json(query, response \\ 200) do
+        get(build_conn(), "/api", query: query)
+        |> json_response(response)
+      end
     end
   end
 
