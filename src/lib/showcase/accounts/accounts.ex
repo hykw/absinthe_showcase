@@ -21,6 +21,15 @@ defmodule Showcase.Accounts do
     Repo.all(User)
   end
 
+  def list_users(:normal_user) do
+    from(
+      u in User,
+      where: u.permission == 0,
+      order_by: [asc: u.id]
+    )
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single user.
 
