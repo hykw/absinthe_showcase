@@ -1,4 +1,4 @@
-defmodule ShowcaseWeb.Schema.Query.AccountsUserTest do
+defmodule ShowcaseWeb.Schema.Query.UsersTest do
   use ShowcaseWeb.ConnCase, async: false
 
   setup do
