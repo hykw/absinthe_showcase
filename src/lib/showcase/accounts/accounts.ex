@@ -128,4 +128,16 @@ defmodule Showcase.Accounts do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
+
+  def authenticate(permission, email, password) do
+    user = Repo.get_by(User, permission: permission, email: email)
+
+    ### In a production, you must use comeonin or such to avoid plain password!
+    with %{plain_password: db_password} <- user,
+         true <- db_password == password do
+      {:ok, user}
+    else
+      _ -> :error
+    end
+  end
 end

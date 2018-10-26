@@ -1,6 +1,7 @@
 defmodule Factory do
   alias Showcase.{
-    Accounts
+    Accounts,
+    Repo
   }
 
   def create_user(permission) do
@@ -13,8 +14,8 @@ defmodule Factory do
       permission: permission
     }
 
-    %Showcase.Accounts.User{}
-    |> Showcase.Accounts.User.changeset(params)
-    |> Showcase.Repo.insert!()
+    %Accounts.User{}
+    |> Accounts.User.changeset(params)
+    |> Repo.insert!()
   end
 end
