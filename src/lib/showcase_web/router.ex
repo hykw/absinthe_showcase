@@ -11,6 +11,7 @@ defmodule ShowcaseWeb.Router do
 
   pipeline :api do
     plug(:accepts, ["json"])
+    plug(ShowcaseWeb.Context)
   end
 
   scope "/", ShowcaseWeb do

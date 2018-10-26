@@ -64,6 +64,10 @@ defmodule Showcase.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user(id, permission) do
+    Repo.get_by(User, id: id, permission: permission)
+  end
+
   @doc """
   Creates a user.
 

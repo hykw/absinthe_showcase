@@ -9,6 +9,14 @@ defmodule ShowcaseWeb.Resolvers.Accounts do
     {:ok, Accounts.list_users(:normal_user, args)}
   end
 
+  def me(_, _, %{context: %{current_user: current_user}}) do
+    {:ok, current_user}
+  end
+
+  def me(_, _, _) do
+    {:ok, nil}
+  end
+
   def login(_, %{email: email, password: password, permission: perm_atom}, _) do
     permission = AccountTypes.parse_permission(perm_atom)
 

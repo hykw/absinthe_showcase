@@ -28,6 +28,11 @@ defmodule ShowcaseWeb.ConnCase do
         get(build_conn(), "/api", query: query)
         |> json_response(response)
       end
+
+      def auth_user(conn, user) do
+        token = Showcase.Authentication.sign(%{permission: user.permission, id: user.id})
+        put_req_header(conn, "authorization", "Bearer #{token}")
+      end
     end
   end
 

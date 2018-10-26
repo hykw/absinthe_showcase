@@ -3,6 +3,7 @@ defmodule ShowcaseWeb.Schema do
   import_types(Absinthe.Type.Custom)
 
   alias ShowcaseWeb.Resolvers
+  alias ShowcaseWeb.Schema.Middleware
 
   import_types(__MODULE__.AccountTypes)
 
@@ -12,6 +13,7 @@ defmodule ShowcaseWeb.Schema do
 
   query do
     import_fields(:user_queries)
+    import_fields(:me_queries)
   end
 
   mutation do
@@ -27,6 +29,17 @@ defmodule ShowcaseWeb.Schema do
       arg(:id, :id)
       arg(:nickname, :string)
       resolve(&Resolvers.Accounts.users/3)
+    end
+  end
+
+  object :me_queries do
+    @desc """
+    query one's own info
+    """
+
+    field :me, :user_with_priv do
+      middleware(Middleware.Authorize, :any)
+      resolve(&Resolvers.Accounts.me/3)
     end
   end
 
