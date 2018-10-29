@@ -17,6 +17,7 @@ defmodule ShowcaseWeb.Schema.AccountTypes do
     field(:id, :id)
     field(:nickname, :string)
     field(:email, :string)
+    field(:permission, :integer)
   end
 
   @desc "session value"
