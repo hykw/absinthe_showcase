@@ -25,5 +25,6 @@ defmodule Showcase.Accounts.User do
     user
     |> cast(attrs, [:nickname, :email, :plain_password, :permission])
     |> validate_required([:nickname, :email, :plain_password, :permission])
+    |> unique_constraint(:nickname)
   end
 end

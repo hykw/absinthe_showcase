@@ -18,7 +18,7 @@ defmodule ShowcaseWeb.Resolvers.Accounts do
   end
 
   def login(_, %{email: email, password: password, permission: perm_atom}, _) do
-    permission = AccountTypes.parse_permission(perm_atom)
+    permission = AccountTypes.parse_perm_to_int(perm_atom)
 
     case Accounts.authenticate(permission, email, password) do
       {:ok, user} ->
@@ -32,6 +32,24 @@ defmodule ShowcaseWeb.Resolvers.Accounts do
 
       _ ->
         {:error, "incorrect email or password"}
+    end
+  end
+
+  def create_user(
+        _,
+        %{email: _email, nickname: _nickname, password: password, permission: perm_atom} = params,
+        _
+      ) do
+    permission = AccountTypes.parse_perm_to_int(perm_atom)
+
+    new_params =
+      params
+      |> Map.put(:permission, permission)
+      |> Map.put(:plain_password, password)
+      |> Map.delete(:password)
+
+    with {:ok, user} <- Accounts.create_user(new_params) do
+      {:ok, %{user: user}}
     end
   end
 end

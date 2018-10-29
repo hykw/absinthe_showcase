@@ -21,7 +21,7 @@ defmodule ShowcaseWeb.Schema.Middleware.Authorize do
   end
 
   defp correct_permission?(%{permission: current_permission}, permission) do
-    if current_permission == AccountTypes.parse_permission(permission) do
+    if current_permission == AccountTypes.parse_perm_to_int(permission) do
       true
     else
       false

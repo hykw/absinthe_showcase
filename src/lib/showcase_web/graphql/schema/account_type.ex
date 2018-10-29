@@ -20,6 +20,14 @@ defmodule ShowcaseWeb.Schema.AccountTypes do
     field(:permission, :integer)
   end
 
+  @desc """
+  result of mutation(user_with_priv)
+  """
+  object :user_with_priv_result do
+    field(:user, :user_with_priv)
+    field(:errors, list_of(:input_error))
+  end
+
   @desc "session value"
   object :session do
     field(:token, :string)
@@ -32,8 +40,19 @@ defmodule ShowcaseWeb.Schema.AccountTypes do
     value(:admin)
   end
 
-  def parse_permission(:normal_user), do: 0
-  def parse_permission(:admin), do: 1
-  def parse_permission(0), do: :normal_user
-  def parse_permission(1), do: :admin
+  @desc "input error"
+  object :input_error do
+    field(:key, non_null(:string))
+    field(:message, non_null(:string))
+  end
+
+  def parse_perm_to_int(0), do: 0
+  def parse_perm_to_int(:normal_user), do: 0
+  def parse_perm_to_int(1), do: 1
+  def parse_perm_to_int(:admin), do: 1
+
+  def parse_perm_to_atom(0), do: :normal_user
+  def parse_perm_to_atom(:normal_user), do: :normal_user
+  def parse_perm_to_atom(1), do: :admin
+  def parse_perm_to_atom(:admin), do: :admin
 end
