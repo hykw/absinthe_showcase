@@ -7,6 +7,7 @@ defmodule ShowcaseWeb.Schema do
 
   import_types(__MODULE__.AccountTypes)
   import_types(__MODULE__.QATypes)
+  import_types(__MODULE__.MultiTypes)
 
   def middleware(middleware, _field, %{identifier: :mutation}) do
     middleware ++ [Middleware.ChangesetErrors]
@@ -45,9 +46,9 @@ defmodule ShowcaseWeb.Schema do
     query one's own info
     """
 
-    field :me, :user_with_priv do
+    field :me, :me do
       middleware(Middleware.Authorize, :any)
-      resolve(&Resolvers.Accounts.me/3)
+      resolve(&Resolvers.Me.me/3)
     end
   end
 

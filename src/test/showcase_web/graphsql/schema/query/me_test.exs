@@ -11,9 +11,11 @@ defmodule ShowcaseWeb.Schema.Query.MeTest do
     query = """
     {
       me {
-        id
-        nickname
-        email
+        user {
+          id
+          nickname
+          email
+        }
       }
     }
     """
@@ -27,9 +29,11 @@ defmodule ShowcaseWeb.Schema.Query.MeTest do
     assert resp == %{
              "data" => %{
                "me" => %{
-                 "id" => Integer.to_string(user.id),
-                 "email" => user.email,
-                 "nickname" => user.nickname
+                 "user" => %{
+                   "id" => Integer.to_string(user.id),
+                   "email" => user.email,
+                   "nickname" => user.nickname
+                 }
                }
              }
            }
