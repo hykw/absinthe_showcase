@@ -11,8 +11,8 @@ defmodule ShowcaseWeb.Resolvers.QA do
     {:ok, QA.list_answers(args)}
   end
 
-  def answer_for_question(question, _, _) do
-    {:ok, QA.answer_for_question(question)}
+  def answers_for_question(question, _, _) do
+    {:ok, QA.answers_for_question(question)}
   end
 
   def question_for_answer(answer, _, _) do

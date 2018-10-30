@@ -250,7 +250,7 @@ defmodule Showcase.QA do
     Answer.changeset(answer, %{})
   end
 
-  def answer_for_question(question) do
+  def answers_for_question(question) do
     query = Ecto.assoc(question, :answers)
     Repo.all(query)
   end

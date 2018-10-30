@@ -16,7 +16,7 @@ defmodule ShowcaseWeb.Schema.QATypes do
     end
 
     field :answers, list_of(:answer) do
-      resolve(&Resolvers.QA.answer_for_question/3)
+      resolve(&Resolvers.QA.answers_for_question/3)
     end
   end
 
