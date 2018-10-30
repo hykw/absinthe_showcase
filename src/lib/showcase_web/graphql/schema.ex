@@ -6,6 +6,7 @@ defmodule ShowcaseWeb.Schema do
   alias ShowcaseWeb.Schema.Middleware
 
   import_types(__MODULE__.AccountTypes)
+  import_types(__MODULE__.QATypes)
 
   def middleware(middleware, _field, %{identifier: :mutation}) do
     middleware ++ [Middleware.ChangesetErrors]
@@ -18,6 +19,8 @@ defmodule ShowcaseWeb.Schema do
   query do
     import_fields(:user_queries)
     import_fields(:me_queries)
+    import_fields(:question_queries)
+    import_fields(:answer_queries)
   end
 
   mutation do
@@ -45,6 +48,29 @@ defmodule ShowcaseWeb.Schema do
     field :me, :user_with_priv do
       middleware(Middleware.Authorize, :any)
       resolve(&Resolvers.Accounts.me/3)
+    end
+  end
+
+  object :question_queries do
+    @desc """
+    query questions(includes answers)
+    """
+
+    field :questions, list_of(:question) do
+      arg(:id, :id)
+      arg(:title, :string)
+      resolve(&Resolvers.QA.questions/3)
+    end
+  end
+
+  object :answer_queries do
+    @desc """
+    answer questions(includes user and question)
+    """
+
+    field :answers, list_of(:answer) do
+      arg(:id, :id)
+      resolve(&Resolvers.QA.answers/3)
     end
   end
 

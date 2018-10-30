@@ -52,4 +52,12 @@ defmodule ShowcaseWeb.Resolvers.Accounts do
       {:ok, %{user: user}}
     end
   end
+
+  def user_for_question(question, _, _) do
+    {:ok, Accounts.user_for_question(question)}
+  end
+
+  def user_for_answer(answer, _, _) do
+    {:ok, Accounts.user_for_question(answer)}
+  end
 end

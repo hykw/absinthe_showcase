@@ -144,4 +144,14 @@ defmodule Showcase.Accounts do
       _ -> :error
     end
   end
+
+  def user_for_question(question) do
+    query = Ecto.assoc(question, :user)
+    Repo.one(query)
+  end
+
+  def user_for_answer(answer) do
+    query = Ecto.assoc(answer, :user)
+    Repo.one(query)
+  end
 end

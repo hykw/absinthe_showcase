@@ -21,6 +21,32 @@ defmodule Showcase.QA do
     Repo.all(Question)
   end
 
+  def list_questions(args) do
+    query =
+      from(
+        q in Question,
+        order_by: [asc: q.id]
+      )
+
+    Enum.reduce(args, query, fn
+      {_, nil}, query ->
+        query
+
+      {:id, id}, query ->
+        from(
+          q in query,
+          where: q.id == ^id
+        )
+
+      {:title, title}, query ->
+        from(
+          q in query,
+          where: q.title == ^title
+        )
+    end)
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single question.
 
@@ -117,6 +143,32 @@ defmodule Showcase.QA do
     Repo.all(Answer)
   end
 
+  def list_answers(args) do
+    query =
+      from(
+        a in Answer,
+        order_by: [asc: a.id]
+      )
+
+    Enum.reduce(args, query, fn
+      {_, nil}, query ->
+        query
+
+      {:id, id}, query ->
+        from(
+          q in query,
+          where: q.id == ^id
+        )
+
+      {:title, title}, query ->
+        from(
+          q in query,
+          where: q.title == ^title
+        )
+    end)
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single answer.
 
@@ -196,5 +248,15 @@ defmodule Showcase.QA do
   """
   def change_answer(%Answer{} = answer) do
     Answer.changeset(answer, %{})
+  end
+
+  def answer_for_question(question) do
+    query = Ecto.assoc(question, :answers)
+    Repo.all(query)
+  end
+
+  def question_for_answer(answer) do
+    query = Ecto.assoc(answer, :question)
+    Repo.one(query)
   end
 end
