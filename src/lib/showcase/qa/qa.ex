@@ -251,22 +251,26 @@ defmodule Showcase.QA do
   end
 
   def answers_for_question(question) do
-    query = Ecto.assoc(question, :answers)
-    Repo.all(query)
+    question
+    |> Ecto.assoc(:answers)
+    |> Repo.all()
   end
 
   def question_for_answer(answer) do
-    query = Ecto.assoc(answer, :question)
-    Repo.one(query)
+    answer
+    |> Ecto.assoc(:question)
+    |> Repo.one()
   end
 
   def questions_for_user(user) do
-    query = Ecto.assoc(user, :questions)
-    Repo.all(query)
+    user
+    |> Ecto.assoc(:questions)
+    |> Repo.all()
   end
 
   def answers_for_user(user) do
-    query = Ecto.assoc(user, :answers)
-    Repo.all(query)
+    user
+    |> Ecto.assoc(:answers)
+    |> Repo.all()
   end
 end

@@ -146,12 +146,14 @@ defmodule Showcase.Accounts do
   end
 
   def user_for_question(question) do
-    query = Ecto.assoc(question, :user)
-    Repo.one(query)
+    question
+    |> Ecto.assoc(:user)
+    |> Repo.one()
   end
 
   def user_for_answer(answer) do
-    query = Ecto.assoc(answer, :user)
-    Repo.one(query)
+    answer
+    |> Ecto.assoc(:user)
+    |> Repo.one()
   end
 end
