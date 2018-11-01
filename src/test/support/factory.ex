@@ -1,7 +1,8 @@
 defmodule Factory do
   alias Showcase.{
     Accounts,
-    Repo
+    Repo,
+    QA
   }
 
   def create_user(permission) do
@@ -17,5 +18,43 @@ defmodule Factory do
     %Accounts.User{}
     |> Accounts.User.changeset(params)
     |> Repo.insert!()
+  end
+
+  def create_qa(user) do
+    user_id = user.id
+
+    1..3
+    |> Enum.map(fn i ->
+      params = %{
+        user_id: user_id,
+        title: "title: #{user_id}-#{i}",
+        body: "body: #{user_id}-#{i}"
+      }
+
+      question =
+        %QA.Question{}
+        |> QA.Question.changeset(params)
+        |> Repo.insert!()
+
+      ### answers
+      answers =
+        1..5
+        |> Enum.map(fn i ->
+          params = %{
+            user_id: user_id,
+            question_id: question.id,
+            body: "body: #{user_id}-#{i}"
+          }
+
+          %QA.Answer{}
+          |> QA.Answer.changeset(params)
+          |> Repo.insert!()
+        end)
+
+      %{
+        question: question,
+        answers: answers
+      }
+    end)
   end
 end

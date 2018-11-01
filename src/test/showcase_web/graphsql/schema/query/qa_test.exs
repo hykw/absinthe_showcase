@@ -6,13 +6,6 @@ defmodule ShowcaseWeb.Schema.Query.QATest do
   end
 
   describe "query question" do
-    defp parse_resp(resp, :question_id) do
-      resp
-      |> Enum.map(fn x ->
-        x["id"]
-      end)
-    end
-
     defp get_response() do
       query = """
       {
@@ -31,13 +24,16 @@ defmodule ShowcaseWeb.Schema.Query.QATest do
               id
               nickname
             }
+            question {
+              id
+            }
           }
         }
       }
       """
 
       apicall_on_json(query)["data"]["questions"]
-      #      |> IO.inspect
+      #            |> IO.inspect
     end
 
     test "question list" do
@@ -47,15 +43,15 @@ defmodule ShowcaseWeb.Schema.Query.QATest do
       assert Enum.count(resp) == 4
 
       ### confirm question id for answers
-      question_ids = parse_resp(resp, :question_id)
+      question_id = r1["id"]
 
       answer_q_ids =
         r1["answers"]
         |> Enum.map(fn x ->
-          x["id"]
+          x["question"]["id"]
         end)
 
-      {_, expect_q_ids} = List.pop_at(question_ids, 3)
+      expect_q_ids = List.duplicate(question_id, 3)
       assert expect_q_ids == answer_q_ids
 
       ### confirm user_id
@@ -96,6 +92,9 @@ defmodule ShowcaseWeb.Schema.Query.QATest do
               id
               nickname
             }
+            question {
+              id
+            }
           }
         }
       }
@@ -120,6 +119,9 @@ defmodule ShowcaseWeb.Schema.Query.QATest do
           user {
             id
             nickname
+          }
+          question {
+            id
           }
         }
       }
