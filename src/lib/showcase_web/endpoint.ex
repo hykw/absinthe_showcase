@@ -1,7 +1,10 @@
 defmodule ShowcaseWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :showcase
 
-  socket("/socket", ShowcaseWeb.UserSocket)
+  socket "/socket", ShowcaseWeb.UserSocket,
+    # or list of options
+    websocket: true,
+    longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.
   #

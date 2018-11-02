@@ -33,7 +33,7 @@ defmodule Showcase.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.3.0"},
+      {:phoenix, "~> 1.4.0-rc", override: true},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:mariaex, ">= 0.0.0"},
@@ -46,7 +46,8 @@ defmodule Showcase.Mixfile do
       {:dataloader, "~> 1.0"},
       {:plug_cowboy, "~> 1.0"},
       {:ecto, "~> 3.0"},
-      {:ecto_sql, "~> 3.0"}
+      {:ecto_sql, "~> 3.0"},
+      {:poison, "~> 4.0", override: true}
     ]
   end
 
