@@ -44,7 +44,9 @@ defmodule Showcase.Mixfile do
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
       {:dataloader, "~> 1.0"},
-      {:plug_cowboy, "~> 1.0"}
+      {:plug_cowboy, "~> 1.0"},
+      {:ecto, "~> 3.0"},
+      {:ecto_sql, "~> 3.0"}
     ]
   end
 

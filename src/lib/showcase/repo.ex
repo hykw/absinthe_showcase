@@ -1,5 +1,7 @@
 defmodule Showcase.Repo do
-  use Ecto.Repo, otp_app: :showcase
+  use Ecto.Repo,
+    otp_app: :showcase,
+    adapter: Ecto.Adapters.MySQL
 
   @doc """
   Dynamically loads the repository url from the
