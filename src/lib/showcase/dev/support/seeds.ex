@@ -1,8 +1,7 @@
 defmodule Showcase.Seeds do
   alias Showcase.{
     Accounts,
-    QA,
-    Repo
+    QA
   }
 
   def run() do
@@ -88,8 +87,8 @@ defmodule Showcase.Seeds do
   defp insert_question(user, i) do
     {:ok, question} =
       %{
-        title: "質問(user_id: #{user.id}) #{i}",
-        body: "本文(user_id: #{user.id}) #{i}",
+        title: "question (user_id: #{user.id}) #{i}",
+        body: "body (user_id: #{user.id}) #{i}",
         user_id: user.id
       }
       |> QA.create_question()
@@ -101,7 +100,7 @@ defmodule Showcase.Seeds do
     range
     |> Enum.map(fn i ->
       %{
-        body: "回答(question_id: #{question.id}) #{i}",
+        body: "answer (question_id: #{question.id}) #{i}",
         user_id: user.id,
         question_id: question.id
       }
