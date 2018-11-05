@@ -80,8 +80,14 @@ defmodule Showcase.Seeds do
     insert_question(user, 1)
   end
 
-  defp create_qa(:user3, _user) do
-    # Do nothing
+  defp create_qa(:user3, user) do
+    insert_question(user, 1)
+    |> insert_comment(user, 1..15)
+
+    2..15
+    |> Enum.map(fn i ->
+      insert_question(user, i)
+    end)
   end
 
   defp insert_question(user, i) do
