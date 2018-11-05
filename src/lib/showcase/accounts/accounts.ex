@@ -145,15 +145,11 @@ defmodule Showcase.Accounts do
     end
   end
 
-  def user_for_question(question) do
-    question
-    |> Ecto.assoc(:user)
-    |> Repo.one()
+  def data() do
+    Dataloader.Ecto.new(Repo, query: &query/2)
   end
 
-  def user_for_answer(answer) do
-    answer
-    |> Ecto.assoc(:user)
-    |> Repo.one()
+  def query(queryable, _params) do
+    queryable
   end
 end

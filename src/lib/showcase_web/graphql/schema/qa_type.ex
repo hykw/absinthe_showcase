@@ -1,7 +1,11 @@
 defmodule ShowcaseWeb.Schema.QATypes do
   use Absinthe.Schema.Notation
+  import Absinthe.Resolution.Helpers, only: [dataloader: 2]
 
-  alias ShowcaseWeb.Resolvers
+  alias Showcase.{
+    Accounts,
+    QA
+  }
 
   @desc """
   quesions info
@@ -12,11 +16,11 @@ defmodule ShowcaseWeb.Schema.QATypes do
     field(:body, :string)
 
     field :user, :user do
-      resolve(&Resolvers.Accounts.user_for_question/3)
+      resolve(dataloader(Accounts, :user))
     end
 
     field :answers, list_of(:answer) do
-      resolve(&Resolvers.QA.answers_for_question/3)
+      resolve(dataloader(QA, :answers))
     end
   end
 
@@ -25,11 +29,11 @@ defmodule ShowcaseWeb.Schema.QATypes do
     field(:body, :string)
 
     field :user, :user do
-      resolve(&Resolvers.Accounts.user_for_answer/3)
+      resolve(dataloader(Accounts, :user))
     end
 
     field :question, :question do
-      resolve(&Resolvers.QA.question_for_answer/3)
+      resolve(dataloader(QA, :question))
     end
   end
 end

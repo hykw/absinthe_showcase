@@ -250,18 +250,6 @@ defmodule Showcase.QA do
     Answer.changeset(answer, %{})
   end
 
-  def answers_for_question(question) do
-    question
-    |> Ecto.assoc(:answers)
-    |> Repo.all()
-  end
-
-  def question_for_answer(answer) do
-    answer
-    |> Ecto.assoc(:question)
-    |> Repo.one()
-  end
-
   def questions_for_user(user) do
     user
     |> Ecto.assoc(:questions)
@@ -272,5 +260,13 @@ defmodule Showcase.QA do
     user
     |> Ecto.assoc(:answers)
     |> Repo.all()
+  end
+
+  def data() do
+    Dataloader.Ecto.new(Repo, query: &query/2)
+  end
+
+  def query(queryable, _params) do
+    queryable
   end
 end

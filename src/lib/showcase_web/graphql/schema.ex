@@ -5,9 +5,10 @@ defmodule ShowcaseWeb.Schema do
   alias ShowcaseWeb.Resolvers
   alias ShowcaseWeb.Schema.Middleware
 
-  import_types(__MODULE__.AccountTypes)
-  import_types(__MODULE__.QATypes)
-  import_types(__MODULE__.MultiTypes)
+  alias Showcase.{
+    Accounts,
+    QA
+  }
 
   def middleware(middleware, _field, %{identifier: :mutation}) do
     middleware ++ [Middleware.ChangesetErrors]
@@ -16,6 +17,26 @@ defmodule ShowcaseWeb.Schema do
   def middleware(middleware, _field, _object) do
     middleware
   end
+
+  def plugins do
+    [Absinthe.Middleware.Dataloader | Absinthe.Plugin.defaults()]
+  end
+
+  def dataloader() do
+    Dataloader.new()
+    |> Dataloader.add_source(Accounts, Accounts.data())
+    |> Dataloader.add_source(QA, QA.data())
+  end
+
+  def context(ctx) do
+    Map.put(ctx, :loader, dataloader())
+  end
+
+  ##################################################
+
+  import_types(__MODULE__.AccountTypes)
+  import_types(__MODULE__.QATypes)
+  import_types(__MODULE__.MultiTypes)
 
   query do
     import_fields(:user_queries)
