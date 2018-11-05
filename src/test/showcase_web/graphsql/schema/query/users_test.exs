@@ -23,11 +23,19 @@ defmodule ShowcaseWeb.Schema.Query.UsersTest do
       }
       """
 
-      assert apicall_on_json(query) == %{
-               "data" => %{
-                 "users" => get_users(:normal_user)
-               }
-             }
+      {normal, bulk} =
+        apicall_on_json(query)["data"]["users"]
+        |> Enum.split(3)
+
+      assert normal == get_users(:normal_user)
+
+      expects =
+        4..100
+        |> Enum.map(fn i ->
+          %{"nickname" => "bulk: #{i}"}
+        end)
+
+      assert bulk == expects
     end
 
     test "filter with args" do

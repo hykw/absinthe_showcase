@@ -25,6 +25,21 @@ defmodule Showcase.Seeds do
     create_qa(:user1, user1)
     create_qa(:user2, user2)
     create_qa(:user3, user3)
+
+    create_bulk_users()
+  end
+
+  defp create_bulk_users() do
+    4..100
+    |> Enum.map(fn i ->
+      %{
+        nickname: "bulk: #{i}",
+        email: "user#{i}@example.com",
+        plain_password: "pass",
+        permission: 0
+      }
+      |> Accounts.create_user()
+    end)
   end
 
   defp get_users() do
