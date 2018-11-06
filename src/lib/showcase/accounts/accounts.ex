@@ -4,7 +4,11 @@ defmodule Showcase.Accounts do
   """
 
   import Ecto.Query, warn: false
-  alias Showcase.Repo
+
+  alias Showcase.{
+    ContextHelper,
+    Repo
+  }
 
   alias Showcase.Accounts.User
 
@@ -28,6 +32,8 @@ defmodule Showcase.Accounts do
         where: u.permission == 0,
         order_by: [asc: u.id]
       )
+
+    [query, args] = ContextHelper.limit_offset(query, args)
 
     Enum.reduce(args, query, fn
       {_, nil}, query ->

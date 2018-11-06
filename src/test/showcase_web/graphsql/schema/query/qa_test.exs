@@ -5,37 +5,37 @@ defmodule ShowcaseWeb.Schema.Query.QATest do
     Showcase.Seeds.run()
   end
 
-  describe "query question" do
-    defp get_response() do
-      query = """
-      {
-        questions {
+  defp get_response() do
+    query = """
+    {
+      questions(limit: 100) {
+        id
+        title
+        body
+        user {
           id
-          title
+          nickname
+        }
+        answers {
+          id
           body
           user {
             id
             nickname
           }
-          answers {
+          question {
             id
-            body
-            user {
-              id
-              nickname
-            }
-            question {
-              id
-            }
           }
         }
       }
-      """
+    }
+    """
 
-      apicall_on_json(query)["data"]["questions"]
-      #                        |> IO.inspect
-    end
+    apicall_on_json(query)["data"]["questions"]
+    #                        |> IO.inspect
+  end
 
+  describe "query question" do
     defp split_results(resp) do
       {r1, rest} = Enum.split(resp, 3)
       {r2, r3} = Enum.split(rest, 1)
@@ -79,5 +79,114 @@ defmodule ShowcaseWeb.Schema.Query.QATest do
              x["question"]["id"] == head["id"]
            end)
            |> Enum.all?()
+  end
+
+  describe "limit/offset" do
+    test "default" do
+      query = """
+      {
+        questions {
+          id
+          title
+          body
+          user {
+            id
+            nickname
+          }
+          answers {
+            id
+            body
+            user {
+              id
+              nickname
+            }
+            question {
+              id
+            }
+          }
+        }
+      }
+      """
+
+      assert apicall_on_json(query)["data"]["questions"]
+             |> Enum.count() == 5
+    end
+
+    test "question:limit" do
+      query = """
+      {
+        questions(limit: 3) {
+          id
+          title
+          body
+        }
+      }
+      """
+
+      assert apicall_on_json(query)["data"]["questions"]
+    end
+
+    test "question:offset" do
+      query = """
+      {
+        questions(limit: 2, offset: 3) {
+          id
+          title
+          body
+        }
+      }
+      """
+
+      resp = apicall_on_json(query)["data"]["questions"]
+      assert Enum.count(resp) == 2
+
+      query = """
+      {
+        questions(limit: 1000) {
+          id
+          title
+          body
+        }
+      }
+      """
+
+      {expect, _} =
+        apicall_on_json(query)["data"]["questions"]
+        |> List.delete_at(0)
+        |> List.delete_at(0)
+        |> List.delete_at(0)
+        |> Enum.split(2)
+
+      assert expect == resp
+    end
+
+    test "limit/offset for child answers" do
+      query = """
+      {
+        questions(limit: 1) {
+          id
+          answers(limit: 1, offset: 2) {
+            id
+            body
+            user {
+              id
+              nickname
+            }
+            question {
+              id
+            }
+          }
+        }
+      }
+      """
+
+      [resp] = apicall_on_json(query)["data"]["questions"]
+
+      answer =
+        resp["answers"]
+        |> hd()
+
+      assert resp["id"] == answer["question"]["id"]
+    end
   end
 end

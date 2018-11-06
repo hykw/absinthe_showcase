@@ -58,6 +58,8 @@ defmodule ShowcaseWeb.Schema do
     field :users, list_of(:user) do
       arg(:id, :id)
       arg(:nickname, :string)
+      arg(:limit, :integer)
+      arg(:offset, :integer)
       resolve(&Resolvers.Accounts.users/3)
     end
   end
@@ -81,6 +83,8 @@ defmodule ShowcaseWeb.Schema do
     field :questions, list_of(:question) do
       arg(:id, :id)
       arg(:title, :string)
+      arg(:limit, :integer)
+      arg(:offset, :integer)
       resolve(&Resolvers.QA.questions/3)
     end
   end
@@ -92,6 +96,8 @@ defmodule ShowcaseWeb.Schema do
 
     field :answers, list_of(:answer) do
       arg(:id, :id)
+      arg(:limit, :integer)
+      arg(:offset, :integer)
       resolve(&Resolvers.QA.answers/3)
     end
   end

@@ -4,9 +4,18 @@ defmodule Showcase.QA do
   """
 
   import Ecto.Query, warn: false
-  alias Showcase.Repo
 
-  alias Showcase.QA.Question
+  alias Showcase.{
+    ContextHelper,
+    Repo
+  }
+
+  alias ShowcaseWeb.Resolvers
+
+  alias Showcase.QA.{
+    Answer,
+    Question
+  }
 
   @doc """
   Returns the list of questions.
@@ -27,6 +36,8 @@ defmodule Showcase.QA do
         q in Question,
         order_by: [asc: q.id]
       )
+
+    [query, args] = ContextHelper.limit_offset(query, args)
 
     Enum.reduce(args, query, fn
       {_, nil}, query ->
@@ -128,8 +139,6 @@ defmodule Showcase.QA do
     Question.changeset(question, %{})
   end
 
-  alias Showcase.QA.Answer
-
   @doc """
   Returns the list of answers.
 
@@ -164,6 +173,18 @@ defmodule Showcase.QA do
         from(
           q in query,
           where: q.title == ^title
+        )
+
+      {:limit, limit}, query ->
+        from(
+          q in query,
+          limit: ^limit
+        )
+
+      {:offset, offset}, query ->
+        from(
+          q in query,
+          offset: ^offset
         )
     end)
     |> Repo.all()
@@ -250,20 +271,31 @@ defmodule Showcase.QA do
     Answer.changeset(answer, %{})
   end
 
-  def questions_for_user(user) do
+  def questions_for_user(user, args) do
     user
     |> Ecto.assoc(:questions)
+    |> ContextHelper.limit_offset(:dataloader, args)
     |> Repo.all()
   end
 
-  def answers_for_user(user) do
+  def answers_for_user(user, args) do
     user
     |> Ecto.assoc(:answers)
+    |> ContextHelper.limit_offset(:dataloader, args)
     |> Repo.all()
   end
 
   def data() do
     Dataloader.Ecto.new(Repo, query: &query/2)
+  end
+
+  def query(Answer, params) do
+    new_params =
+      :answers
+      |> Resolvers.QA.get_default_params()
+      |> Resolvers.QA.set_default_params(params)
+
+    ContextHelper.limit_offset(:dataloader, Answer, new_params)
   end
 
   def query(queryable, _params) do

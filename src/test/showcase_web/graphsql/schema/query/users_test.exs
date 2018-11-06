@@ -17,7 +17,7 @@ defmodule ShowcaseWeb.Schema.Query.UsersTest do
     test "no login query" do
       query = """
       {
-        users {
+        users(limit: 100) {
           nickname
         }
       }
@@ -139,6 +139,50 @@ defmodule ShowcaseWeb.Schema.Query.UsersTest do
       """
 
       assert_no_user(query)
+    end
+  end
+
+  describe "limit/offset" do
+    test "default" do
+      query = """
+      {
+        users {
+          nickname
+        }
+      }
+      """
+
+      # default
+      assert apicall_on_json(query)["data"]["users"]
+             |> Enum.count() == 5
+    end
+
+    test "limit" do
+      query = """
+      {
+        users(limit: 10) {
+          nickname
+        }
+      }
+      """
+
+      x = apicall_on_json(query)["data"]["users"]
+      assert Enum.count(x) == 10
+
+      {_normal, bulk} = Enum.split(x, 3)
+      assert Enum.count(bulk) == 7
+    end
+
+    test "offset" do
+      query = """
+      {
+        users(limit: 1, offset: 2) {
+          nickname
+        }
+      }
+      """
+
+      assert apicall_on_json(query)["data"]["users"] == [%{"nickname" => "Normal3"}]
     end
   end
 end

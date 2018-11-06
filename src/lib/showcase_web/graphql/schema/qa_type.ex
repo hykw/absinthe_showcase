@@ -20,6 +20,8 @@ defmodule ShowcaseWeb.Schema.QATypes do
     end
 
     field :answers, list_of(:answer) do
+      arg(:limit, :integer)
+      arg(:offset, :integer)
       resolve(dataloader(QA, :answers))
     end
   end

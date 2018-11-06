@@ -10,10 +10,14 @@ defmodule ShowcaseWeb.Schema.MultiTypes do
     field(:user, :user_with_priv)
 
     field :questions, list_of(:question) do
+      arg(:limit, :integer)
+      arg(:offset, :integer)
       resolve(&Resolvers.QA.questions_for_user/3)
     end
 
     field :answers, list_of(:answer) do
+      arg(:limit, :integer)
+      arg(:offset, :integer)
       resolve(&Resolvers.QA.answers_for_user/3)
     end
   end
