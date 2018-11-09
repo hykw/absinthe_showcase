@@ -30,7 +30,7 @@ services:
         USER: ${USER}
         MYUID: ${MYUID}
         PORT: 4000
-        ERL_VER: 20.2
+        ERL_VER: 21.1
         WORKDIR: "/showcase/src"
     ports:
       - "5001:4000"

@@ -1,5 +1,5 @@
-FROM hykw/elixir:1.6.0
-ARG ERL_VER=20.2
+FROM hykw/elixir:1.7.4
+ARG ERL_VER=21.1
 
 
 ARG USER="dockeruser"
