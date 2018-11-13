@@ -47,7 +47,8 @@ defmodule Showcase.Mixfile do
       {:plug_cowboy, "~> 1.0"},
       {:ecto, "~> 3.0"},
       {:ecto_sql, "~> 3.0"},
-      {:poison, "~> 4.0", override: true}
+      {:poison, "~> 4.0", override: true},
+      {:tiny_ecto_helper_mysql, "~> 1.0"}
     ]
   end
 

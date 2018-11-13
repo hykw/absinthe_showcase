@@ -11,6 +11,7 @@ defmodule ShowcaseWeb.Schema.QATypes do
   quesions info
   """
   object :question do
+    field(:total_count, :integer)
     field(:id, :id)
     field(:title, :string)
     field(:body, :string)
@@ -27,6 +28,7 @@ defmodule ShowcaseWeb.Schema.QATypes do
   end
 
   object :answer do
+    field(:total_count, :integer)
     field(:id, :id)
     field(:body, :string)
 

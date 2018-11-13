@@ -34,28 +34,32 @@ defmodule Showcase.QA do
     query =
       from(
         q in Question,
+        select: {q.id, q.title, q.body, q.user_id, q.inserted_at, q.updated_at},
         order_by: [asc: q.id]
       )
 
     [query, args] = ContextHelper.limit_offset(query, args)
 
-    Enum.reduce(args, query, fn
-      {_, nil}, query ->
-        query
+    query =
+      Enum.reduce(args, query, fn
+        {_, nil}, query ->
+          query
 
-      {:id, id}, query ->
-        from(
-          q in query,
-          where: q.id == ^id
-        )
+        {:id, id}, query ->
+          from(
+            q in query,
+            where: q.id == ^id
+          )
 
-      {:title, title}, query ->
-        from(
-          q in query,
-          where: q.title == ^title
-        )
-    end)
-    |> Repo.all()
+        {:title, title}, query ->
+          from(
+            q in query,
+            where: q.title == ^title
+          )
+      end)
+
+    {:ok, select_keys} = TinyEctoHelperMySQL.get_select_keys(query)
+    TinyEctoHelperMySQL.query_and_found_rows(query, select_keys, [Repo, %Question{}, Question])
   end
 
   @doc """
@@ -156,38 +160,32 @@ defmodule Showcase.QA do
     query =
       from(
         a in Answer,
+        select: {a.id, a.body, a.user_id, a.question_id, a.inserted_at, a.updated_at},
         order_by: [asc: a.id]
       )
 
-    Enum.reduce(args, query, fn
-      {_, nil}, query ->
-        query
+    [query, args] = ContextHelper.limit_offset(query, args)
 
-      {:id, id}, query ->
-        from(
-          q in query,
-          where: q.id == ^id
-        )
+    query =
+      Enum.reduce(args, query, fn
+        {_, nil}, query ->
+          query
 
-      {:title, title}, query ->
-        from(
-          q in query,
-          where: q.title == ^title
-        )
+        {:id, id}, query ->
+          from(
+            q in query,
+            where: q.id == ^id
+          )
 
-      {:limit, limit}, query ->
-        from(
-          q in query,
-          limit: ^limit
-        )
+        {:body, body}, query ->
+          from(
+            q in query,
+            where: q.body == ^body
+          )
+      end)
 
-      {:offset, offset}, query ->
-        from(
-          q in query,
-          offset: ^offset
-        )
-    end)
-    |> Repo.all()
+    {:ok, select_keys} = TinyEctoHelperMySQL.get_select_keys(query)
+    TinyEctoHelperMySQL.query_and_found_rows(query, select_keys, [Repo, %Answer{}, Answer])
   end
 
   @doc """

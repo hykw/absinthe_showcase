@@ -4,13 +4,33 @@ defmodule ShowcaseWeb.Resolvers.QA do
   }
 
   def questions(_, args, _) do
-    new_args = getset_params(:questions, args)
-    {:ok, QA.list_questions(new_args)}
+    {:ok, %{results: results, count: count}} =
+      :questions
+      |> getset_params(args)
+      |> QA.list_questions()
+
+    result_with_totalcount =
+      results
+      |> Enum.map(fn x ->
+        Map.put(x, :total_count, count)
+      end)
+
+    {:ok, result_with_totalcount}
   end
 
   def answers(_, args, _) do
-    new_args = getset_params(:answers, args)
-    {:ok, QA.list_answers(new_args)}
+    {:ok, %{results: results, count: count}} =
+      :answers
+      |> getset_params(args)
+      |> QA.list_answers()
+
+    result_with_totalcount =
+      results
+      |> Enum.map(fn x ->
+        Map.put(x, :total_count, count)
+      end)
+
+    {:ok, result_with_totalcount}
   end
 
   def questions_for_user(map_user, args, _) do

@@ -12,6 +12,7 @@ defmodule Showcase.QA.Answer do
 
   @timestamps_opts [usec: Mix.env() != :test]
   schema "answers" do
+    field(:total_count, :integer, virtual: true)
     field(:body, :string)
 
     belongs_to(:user, User)

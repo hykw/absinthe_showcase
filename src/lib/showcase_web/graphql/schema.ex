@@ -96,6 +96,7 @@ defmodule ShowcaseWeb.Schema do
 
     field :answers, list_of(:answer) do
       arg(:id, :id)
+      arg(:body, :string)
       arg(:limit, :integer)
       arg(:offset, :integer)
       resolve(&Resolvers.QA.answers/3)

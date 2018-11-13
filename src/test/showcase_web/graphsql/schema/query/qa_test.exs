@@ -51,7 +51,7 @@ defmodule ShowcaseWeb.Schema.Query.QATest do
       ### count data for each users
       assert Enum.count(r1) == 3
       assert Enum.count(r2) == 1
-      assert Enum.count(r3) == 15
+      assert Enum.count(r3) == 21
 
       ### confirm question id for answers
       # user1
