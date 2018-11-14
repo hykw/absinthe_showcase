@@ -34,4 +34,12 @@ defmodule Showcase.ContextHelper do
     [query, _args] = limit_offset(query, args)
     query
   end
+
+  def get_query_fields(info) do
+    info
+    |> Absinthe.Resolution.project()
+    |> Enum.map(& &1.name)
+    |> Enum.map(&Macro.underscore(&1))
+    |> Enum.map(&String.to_atom(&1))
+  end
 end

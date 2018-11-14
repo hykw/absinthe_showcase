@@ -30,7 +30,7 @@ defmodule Showcase.QA do
     Repo.all(Question)
   end
 
-  def list_questions(args) do
+  def list_questions(args, info) do
     query =
       from(
         q in Question,
@@ -58,8 +58,10 @@ defmodule Showcase.QA do
           )
       end)
 
-    {:ok, select_keys} = TinyEctoHelperMySQL.get_select_keys(query)
-    TinyEctoHelperMySQL.query_and_found_rows(query, select_keys, [Repo, %Question{}, Question])
+    info
+    |> ContextHelper.get_query_fields()
+    |> Enum.any?(fn field -> field == :total_count end)
+    |> do_list_questions(query)
   end
 
   @doc """
@@ -156,7 +158,7 @@ defmodule Showcase.QA do
     Repo.all(Answer)
   end
 
-  def list_answers(args) do
+  def list_answers(args, info) do
     query =
       from(
         a in Answer,
@@ -184,8 +186,10 @@ defmodule Showcase.QA do
           )
       end)
 
-    {:ok, select_keys} = TinyEctoHelperMySQL.get_select_keys(query)
-    TinyEctoHelperMySQL.query_and_found_rows(query, select_keys, [Repo, %Answer{}, Answer])
+    info
+    |> ContextHelper.get_query_fields()
+    |> Enum.any?(fn field -> field == :total_count end)
+    |> do_list_answers(query)
   end
 
   @doc """
@@ -298,5 +302,41 @@ defmodule Showcase.QA do
 
   def query(queryable, _params) do
     queryable
+  end
+
+  defp do_list_questions(true, query) do
+    {:ok, select_keys} = TinyEctoHelperMySQL.get_select_keys(query)
+
+    {:ok, %{results: results, count: count}} =
+      TinyEctoHelperMySQL.query_and_found_rows(query, select_keys, [Repo, %Question{}, Question])
+
+    results
+    |> Enum.map(fn x ->
+      Map.put(x, :total_count, count)
+    end)
+  end
+
+  defp do_list_questions(false, query) do
+    query
+    |> exclude(:select)
+    |> Repo.all()
+  end
+
+  defp do_list_answers(true, query) do
+    {:ok, select_keys} = TinyEctoHelperMySQL.get_select_keys(query)
+
+    {:ok, %{results: results, count: count}} =
+      TinyEctoHelperMySQL.query_and_found_rows(query, select_keys, [Repo, %Answer{}, Answer])
+
+    results
+    |> Enum.map(fn x ->
+      Map.put(x, :total_count, count)
+    end)
+  end
+
+  defp do_list_answers(false, query) do
+    query
+    |> exclude(:select)
+    |> Repo.all()
   end
 end

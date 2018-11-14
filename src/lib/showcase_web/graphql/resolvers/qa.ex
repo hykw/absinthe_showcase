@@ -3,34 +3,12 @@ defmodule ShowcaseWeb.Resolvers.QA do
     QA
   }
 
-  def questions(_, args, _) do
-    {:ok, %{results: results, count: count}} =
-      :questions
-      |> getset_params(args)
-      |> QA.list_questions()
-
-    result_with_totalcount =
-      results
-      |> Enum.map(fn x ->
-        Map.put(x, :total_count, count)
-      end)
-
-    {:ok, result_with_totalcount}
+  def questions(_, args, info) do
+    call_contexts(:questions, args, info)
   end
 
-  def answers(_, args, _) do
-    {:ok, %{results: results, count: count}} =
-      :answers
-      |> getset_params(args)
-      |> QA.list_answers()
-
-    result_with_totalcount =
-      results
-      |> Enum.map(fn x ->
-        Map.put(x, :total_count, count)
-      end)
-
-    {:ok, result_with_totalcount}
+  def answers(_, args, info) do
+    call_contexts(:answers, args, info)
   end
 
   def questions_for_user(map_user, args, _) do
@@ -61,5 +39,14 @@ defmodule ShowcaseWeb.Resolvers.QA do
     key
     |> get_default_params()
     |> set_default_params(args)
+  end
+
+  defp call_contexts(model, args, info) do
+    results =
+      model
+      |> getset_params(args)
+      |> QA.list_questions(info)
+
+    {:ok, results}
   end
 end
