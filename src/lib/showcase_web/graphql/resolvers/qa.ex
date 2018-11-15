@@ -4,11 +4,21 @@ defmodule ShowcaseWeb.Resolvers.QA do
   }
 
   def questions(_, args, info) do
-    call_contexts(:questions, args, info)
+    results =
+      :questions
+      |> getset_params(args)
+      |> QA.list_questions(info)
+
+    {:ok, results}
   end
 
   def answers(_, args, info) do
-    call_contexts(:answers, args, info)
+    results =
+      :answers
+      |> getset_params(args)
+      |> QA.list_answers(info)
+
+    {:ok, results}
   end
 
   def questions_for_user(map_user, args, _) do
@@ -39,14 +49,5 @@ defmodule ShowcaseWeb.Resolvers.QA do
     key
     |> get_default_params()
     |> set_default_params(args)
-  end
-
-  defp call_contexts(model, args, info) do
-    results =
-      model
-      |> getset_params(args)
-      |> QA.list_questions(info)
-
-    {:ok, results}
   end
 end

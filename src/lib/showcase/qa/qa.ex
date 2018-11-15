@@ -312,7 +312,7 @@ defmodule Showcase.QA do
 
     results
     |> Enum.map(fn x ->
-      Map.put(x, :total_count, count)
+      Map.put(x, :total_count, Integer.to_string(count))
     end)
   end
 
@@ -330,7 +330,7 @@ defmodule Showcase.QA do
 
     results
     |> Enum.map(fn x ->
-      Map.put(x, :total_count, count)
+      Map.put(x, :total_count, Integer.to_string(count))
     end)
   end
 
