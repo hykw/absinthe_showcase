@@ -34,16 +34,13 @@ defmodule Showcase.Seeds do
   defp create_bulk_qa({:ok, user}) do
     # Q: same title
     1..5
-    |> Enum.map(fn _i ->
-      insert_question(user, "dup question")
+    |> Enum.map(fn i ->
+      insert_question(user, i, :dup_data)
     end)
 
-    q = insert_question(user, "dup question for answers")
+    q = insert_question(user, 0, :dup_data)
 
-    1..3
-    |> Enum.map(fn _i ->
-      insert_answer(q, user, 1..1)
-    end)
+    insert_answer(q, user, 1..3, :dup_data)
   end
 
   defp create_bulk_users() do
@@ -134,11 +131,35 @@ defmodule Showcase.Seeds do
     question
   end
 
+  defp insert_question(user, _i, :dup_data) do
+    {:ok, question} =
+      %{
+        title: "question",
+        body: "body",
+        user_id: user.id
+      }
+      |> QA.create_question()
+
+    question
+  end
+
   defp insert_answer(question, user, range) do
     range
     |> Enum.map(fn i ->
       %{
         body: "answer (question_id: #{question.id}) #{i}",
+        user_id: user.id,
+        question_id: question.id
+      }
+      |> QA.create_answer()
+    end)
+  end
+
+  defp insert_answer(question, user, range, :dup_data) do
+    range
+    |> Enum.map(fn _i ->
+      %{
+        body: "answer",
         user_id: user.id,
         question_id: question.id
       }

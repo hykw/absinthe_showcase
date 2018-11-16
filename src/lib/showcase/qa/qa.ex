@@ -291,6 +291,7 @@ defmodule Showcase.QA do
     Dataloader.Ecto.new(Repo, query: &query/2)
   end
 
+  # params is %{limit: 5} for example
   def query(Answer, params) do
     new_params =
       :answers
@@ -303,6 +304,20 @@ defmodule Showcase.QA do
   def query(queryable, _params) do
     queryable
   end
+
+  def count_answers_by_question(question_id) do
+    [total_count] =
+      from(
+        q in Answer,
+        select: count(q.id),
+        where: q.question_id == ^question_id
+      )
+      |> Repo.all()
+
+    total_count
+  end
+
+  ##################################################
 
   defp do_list_questions(true, query) do
     {:ok, select_keys} = TinyEctoHelperMySQL.get_select_keys(query)

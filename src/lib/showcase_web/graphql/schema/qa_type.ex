@@ -7,6 +7,8 @@ defmodule ShowcaseWeb.Schema.QATypes do
     QA
   }
 
+  alias ShowcaseWeb.Resolvers
+
   @desc """
   quesions info
   """
@@ -23,7 +25,7 @@ defmodule ShowcaseWeb.Schema.QATypes do
     field :answers, list_of(:answer) do
       arg(:limit, :integer)
       arg(:offset, :integer)
-      resolve(dataloader(QA, :answers))
+      resolve(Resolvers.QA.answers_for_question(QA, :answers))
     end
   end
 
