@@ -1,6 +1,4 @@
 defmodule ShowcaseWeb.Resolvers.QA do
-  import Absinthe.Resolution.Helpers, only: [on_load: 2]
-
   alias Showcase.{
     QA
   }
@@ -24,21 +22,7 @@ defmodule ShowcaseWeb.Resolvers.QA do
   end
 
   def answers_for_question(source, key) do
-    fn parent, args, %{context: %{loader: loader}} ->
-      total_count = QA.count_answers_by_question(parent.id)
-
-      loader
-      |> Dataloader.load(source, {key, args}, parent)
-      |> on_load(fn loader ->
-        result =
-          Dataloader.get(loader, source, {key, args}, parent)
-          |> Enum.map(fn x ->
-            Map.put(x, :total_count, Integer.to_string(total_count))
-          end)
-
-        {:ok, result}
-      end)
-    end
+    QA.answers_for_question(source, key)
   end
 
   def questions_for_user(map_user, args, _) do

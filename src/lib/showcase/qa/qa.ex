@@ -4,6 +4,7 @@ defmodule Showcase.QA do
   """
 
   import Ecto.Query, warn: false
+  import Absinthe.Resolution.Helpers, only: [on_load: 2]
 
   alias Showcase.{
     ContextHelper,
@@ -305,16 +306,28 @@ defmodule Showcase.QA do
     queryable
   end
 
-  def count_answers_by_question(question_id) do
-    [total_count] =
-      from(
-        q in Answer,
-        select: count(q.id),
-        where: q.question_id == ^question_id
-      )
-      |> Repo.all()
+  def answers_for_question(source, key) do
+    fn parent, args, %{context: %{loader: loader}} ->
+      [total_count] =
+        from(
+          q in Answer,
+          select: count(q.id),
+          where: q.question_id == ^parent.id
+        )
+        |> Repo.all()
 
-    total_count
+      loader
+      |> Dataloader.load(source, {key, args}, parent)
+      |> on_load(fn loader ->
+        result =
+          Dataloader.get(loader, source, {key, args}, parent)
+          |> Enum.map(fn x ->
+            Map.put(x, :total_count, Integer.to_string(total_count))
+          end)
+
+        {:ok, result}
+      end)
+    end
   end
 
   ##################################################
