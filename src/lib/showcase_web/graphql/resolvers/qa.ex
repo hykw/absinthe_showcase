@@ -25,18 +25,25 @@ defmodule ShowcaseWeb.Resolvers.QA do
     QA.answers_for_question(source, key)
   end
 
-  def questions_for_user(map_user, args, _) do
+  # called from user object
+  def questions_for_users(user, args, _) do
     new_args = getset_params(:questions, args)
-
-    user = map_user.user
     {:ok, QA.questions_for_user(user, new_args)}
   end
 
-  def answers_for_user(map_user, args, _) do
-    new_args = getset_params(:answers, args)
-
+  def questions_for_user(map_user, args, info) do
     user = map_user.user
+    questions_for_users(user, args, info)
+  end
+
+  def answers_for_users(user, args, _) do
+    new_args = getset_params(:answers, args)
     {:ok, QA.answers_for_user(user, new_args)}
+  end
+
+  def answers_for_user(map_user, args, info) do
+    user = map_user.user
+    answers_for_users(user, args, info)
   end
 
   def get_default_params(:questions), do: %{limit: 5, offset: 0}

@@ -1,6 +1,8 @@
 defmodule ShowcaseWeb.Schema.AccountTypes do
   use Absinthe.Schema.Notation
 
+  alias ShowcaseWeb.Resolvers
+
   # suppress password
   @desc """
   users info(excludes password)
@@ -8,6 +10,18 @@ defmodule ShowcaseWeb.Schema.AccountTypes do
   object :user do
     field(:id, :id)
     field(:nickname, :string)
+
+    field :questions, list_of(:question) do
+      arg(:limit, :integer)
+      arg(:offset, :integer)
+      resolve(&Resolvers.QA.questions_for_users/3)
+    end
+
+    field :answers, list_of(:answer) do
+      arg(:limit, :integer)
+      arg(:offset, :integer)
+      resolve(&Resolvers.QA.answers_for_users/3)
+    end
   end
 
   @desc """
@@ -18,6 +32,18 @@ defmodule ShowcaseWeb.Schema.AccountTypes do
     field(:nickname, :string)
     field(:email, :string)
     field(:permission, :integer)
+
+    field :questions, list_of(:question) do
+      arg(:limit, :integer)
+      arg(:offset, :integer)
+      resolve(&Resolvers.QA.questions_for_user/3)
+    end
+
+    field :answers, list_of(:answer) do
+      arg(:limit, :integer)
+      arg(:offset, :integer)
+      resolve(&Resolvers.QA.answers_for_user/3)
+    end
   end
 
   @desc """
