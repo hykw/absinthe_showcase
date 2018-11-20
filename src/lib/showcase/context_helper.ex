@@ -28,6 +28,11 @@ defmodule Showcase.ContextHelper do
     [query, new_args]
   end
 
+  def limit_offset(query, args, :discard_args) do
+    [query, _new_args] = limit_offset(query, args)
+    query
+  end
+
   def limit_offset(q, :dataloader, a), do: limit_offset(:dataloader, q, a)
 
   def limit_offset(:dataloader, query, args) do

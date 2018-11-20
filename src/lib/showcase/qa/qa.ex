@@ -275,17 +275,41 @@ defmodule Showcase.QA do
   end
 
   def questions_for_user(user, args) do
+    # Since user is just one record, N+1 problem doesn't occur.
+    [total_count] =
+      from(
+        q in Question,
+        select: count(q.id),
+        where: q.user_id == ^user.id
+      )
+      |> Repo.all()
+
     user
     |> Ecto.assoc(:questions)
-    |> ContextHelper.limit_offset(:dataloader, args)
+    |> ContextHelper.limit_offset(args, :discard_args)
     |> Repo.all()
+    |> Enum.map(fn x ->
+      Map.put(x, :total_count, Integer.to_string(total_count))
+    end)
   end
 
   def answers_for_user(user, args) do
+    # Since user is just one record, N+1 problem doesn't occur.
+    [total_count] =
+      from(
+        q in Answer,
+        select: count(q.id),
+        where: q.user_id == ^user.id
+      )
+      |> Repo.all()
+
     user
     |> Ecto.assoc(:answers)
-    |> ContextHelper.limit_offset(:dataloader, args)
+    |> ContextHelper.limit_offset(args, :discard_args)
     |> Repo.all()
+    |> Enum.map(fn x ->
+      Map.put(x, :total_count, Integer.to_string(total_count))
+    end)
   end
 
   def data() do

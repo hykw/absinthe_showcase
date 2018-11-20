@@ -1,4 +1,4 @@
-defmodule ShowcaseWeb.Schema.Query.TotalCountTest do
+defmodule ShowcaseWeb.Schema.Query.TotalCountQATest do
   use ShowcaseWeb.ConnCase, async: false
 
   setup do
