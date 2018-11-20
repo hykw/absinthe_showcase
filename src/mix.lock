@@ -26,5 +26,5 @@
   "poolboy": {:hex, :poolboy, "1.5.1", "6b46163901cfd0a1b43d692657ed9d7e599853b3b21b95ae5ae0a777cf9b6ca8", [:rebar], [], "hexpm"},
   "ranch": {:hex, :ranch, "1.3.2", "e4965a144dc9fbe70e5c077c65e73c57165416a901bd02ea899cfd95aa890986", [:rebar3], [], "hexpm"},
   "telemetry": {:hex, :telemetry, "0.2.0", "5b40caa3efe4deb30fb12d7cd8ed4f556f6d6bd15c374c2366772161311ce377", [:mix], [], "hexpm"},
-  "tiny_ecto_helper_mysql": {:hex, :tiny_ecto_helper_mysql, "1.0.0", "ebe516ebf242e0925b94dec04e30993061d01f96d657506565c411f3f2249120", [:mix], [{:ecto, ">= 0.0.0", [hex: :ecto, repo: "hexpm", optional: false]}, {:ecto_sql, ">= 0.0.0", [hex: :ecto_sql, repo: "hexpm", optional: false]}], "hexpm"},
+  "tiny_ecto_helper_mysql": {:hex, :tiny_ecto_helper_mysql, "1.0.1", "e485e353f60cee844e93c41f62ea4962a3b408a3156b9724b6cbe5967786ce46", [:mix], [{:ecto, ">= 0.0.0", [hex: :ecto, repo: "hexpm", optional: false]}, {:ecto_sql, ">= 0.0.0", [hex: :ecto_sql, repo: "hexpm", optional: false]}], "hexpm"},
 }

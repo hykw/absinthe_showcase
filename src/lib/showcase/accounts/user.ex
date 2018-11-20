@@ -9,6 +9,7 @@ defmodule Showcase.Accounts.User do
 
   @timestamps_opts [usec: Mix.env() != :test]
   schema "users" do
+    field(:total_count, :integer, virtual: true)
     field(:email, :string)
     field(:nickname, :string)
     field(:permission, :integer)

@@ -5,13 +5,13 @@ defmodule ShowcaseWeb.Resolvers.Accounts do
 
   alias ShowcaseWeb.Schema.AccountTypes
 
-  def users(_, args, _) do
+  def users(_, args, info) do
     new_args =
       args
       |> Map.put_new(:limit, 5)
       |> Map.put_new(:offset, 0)
 
-    {:ok, Accounts.list_users(:normal_user, new_args)}
+    {:ok, Accounts.list_users(:normal_user, new_args, info)}
   end
 
   def login(_, %{email: email, password: password, permission: perm_atom}, _) do

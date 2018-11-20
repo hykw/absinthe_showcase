@@ -25,33 +25,40 @@ defmodule Showcase.Accounts do
     Repo.all(User)
   end
 
-  def list_users(:normal_user, args) do
+  def list_users(:normal_user, args, info) do
     query =
       from(
         u in User,
         where: u.permission == 0,
+        select:
+          {u.id, u.nickname, u.email, u.plain_password, u.permission, u.inserted_at, u.updated_at},
         order_by: [asc: u.id]
       )
 
     [query, args] = ContextHelper.limit_offset(query, args)
 
-    Enum.reduce(args, query, fn
-      {_, nil}, query ->
-        query
+    query =
+      Enum.reduce(args, query, fn
+        {_, nil}, query ->
+          query
 
-      {:id, id}, query ->
-        from(
-          q in query,
-          where: q.id == ^id
-        )
+        {:id, id}, query ->
+          from(
+            q in query,
+            where: q.id == ^id
+          )
 
-      {:nickname, nickname}, query ->
-        from(
-          q in query,
-          where: q.nickname == ^nickname
-        )
-    end)
-    |> Repo.all()
+        {:nickname, nickname}, query ->
+          from(
+            q in query,
+            where: q.nickname == ^nickname
+          )
+      end)
+
+    info
+    |> ContextHelper.get_query_fields()
+    |> Enum.any?(fn field -> field == :total_count end)
+    |> do_list_users(query)
   end
 
   @doc """
@@ -157,5 +164,25 @@ defmodule Showcase.Accounts do
 
   def query(queryable, _params) do
     queryable
+  end
+
+  ##################################################
+
+  defp do_list_users(true, query) do
+    {:ok, select_keys} = TinyEctoHelperMySQL.get_select_keys(query)
+
+    {:ok, %{results: results, count: count}} =
+      TinyEctoHelperMySQL.query_and_found_rows(query, select_keys, [Repo, %User{}, User])
+
+    results
+    |> Enum.map(fn x ->
+      Map.put(x, :total_count, Integer.to_string(count))
+    end)
+  end
+
+  defp do_list_users(false, query) do
+    query
+    |> exclude(:select)
+    |> Repo.all()
   end
 end

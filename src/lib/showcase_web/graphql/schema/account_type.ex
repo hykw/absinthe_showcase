@@ -8,6 +8,7 @@ defmodule ShowcaseWeb.Schema.AccountTypes do
   users info(excludes password)
   """
   object :user do
+    field(:total_count, :integer)
     field(:id, :id)
     field(:nickname, :string)
 
