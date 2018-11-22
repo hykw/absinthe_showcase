@@ -30,8 +30,6 @@ defmodule Showcase.Accounts do
       from(
         u in User,
         where: u.permission == 0,
-        select:
-          {u.id, u.nickname, u.email, u.plain_password, u.permission, u.inserted_at, u.updated_at},
         order_by: [asc: u.id]
       )
 
@@ -169,10 +167,7 @@ defmodule Showcase.Accounts do
   ##################################################
 
   defp do_list_users(true, query) do
-    {:ok, select_keys} = TinyEctoHelperMySQL.get_select_keys(query)
-
-    {:ok, %{results: results, count: count}} =
-      TinyEctoHelperMySQL.query_and_found_rows(query, select_keys, [Repo, %User{}, User])
+    {:ok, %{results: results, count: count}} = ContextHelper.query_with_count(query)
 
     results
     |> Enum.map(fn x ->

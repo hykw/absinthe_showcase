@@ -35,7 +35,6 @@ defmodule Showcase.QA do
     query =
       from(
         q in Question,
-        select: {q.id, q.title, q.body, q.user_id, q.inserted_at, q.updated_at},
         order_by: [asc: q.id]
       )
 
@@ -163,7 +162,6 @@ defmodule Showcase.QA do
     query =
       from(
         a in Answer,
-        select: {a.id, a.body, a.user_id, a.question_id, a.inserted_at, a.updated_at},
         order_by: [asc: a.id]
       )
 
@@ -357,10 +355,7 @@ defmodule Showcase.QA do
   ##################################################
 
   defp do_list_questions(true, query) do
-    {:ok, select_keys} = TinyEctoHelperMySQL.get_select_keys(query)
-
-    {:ok, %{results: results, count: count}} =
-      TinyEctoHelperMySQL.query_and_found_rows(query, select_keys, [Repo, %Question{}, Question])
+    {:ok, %{results: results, count: count}} = ContextHelper.query_with_count(query)
 
     results
     |> Enum.map(fn x ->
@@ -375,10 +370,7 @@ defmodule Showcase.QA do
   end
 
   defp do_list_answers(true, query) do
-    {:ok, select_keys} = TinyEctoHelperMySQL.get_select_keys(query)
-
-    {:ok, %{results: results, count: count}} =
-      TinyEctoHelperMySQL.query_and_found_rows(query, select_keys, [Repo, %Answer{}, Answer])
+    {:ok, %{results: results, count: count}} = ContextHelper.query_with_count(query)
 
     results
     |> Enum.map(fn x ->

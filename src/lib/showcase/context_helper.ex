@@ -1,6 +1,8 @@
 defmodule Showcase.ContextHelper do
   import Ecto.Query, warn: false
 
+  alias Showcase.Repo
+
   def limit_offset(query, args) do
     query =
       Enum.reduce(args, query, fn
@@ -46,5 +48,23 @@ defmodule Showcase.ContextHelper do
     |> Enum.map(& &1.name)
     |> Enum.map(&Macro.underscore(&1))
     |> Enum.map(&String.to_atom(&1))
+  end
+
+  def query_with_count(query) do
+    results = Repo.all(query)
+
+    count_query =
+      query
+      |> Ecto.Query.exclude(:limit)
+      |> Ecto.Query.exclude(:offset)
+
+    [count] =
+      from(
+        q in count_query,
+        select: count(q.id)
+      )
+      |> Repo.all()
+
+    {:ok, %{results: results, count: count}}
   end
 end
