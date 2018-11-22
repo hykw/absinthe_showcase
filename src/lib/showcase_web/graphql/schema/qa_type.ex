@@ -9,6 +9,34 @@ defmodule ShowcaseWeb.Schema.QATypes do
 
   alias ShowcaseWeb.Resolvers
 
+  object :question_queries do
+    @desc """
+    query questions(includes answers)
+    """
+
+    field :questions, list_of(:question) do
+      arg(:id, :id)
+      arg(:title, :string)
+      arg(:limit, :integer)
+      arg(:offset, :integer)
+      resolve(&Resolvers.QA.questions/3)
+    end
+  end
+
+  object :answer_queries do
+    @desc """
+    answer questions(includes user and question)
+    """
+
+    field :answers, list_of(:answer) do
+      arg(:id, :id)
+      arg(:body, :string)
+      arg(:limit, :integer)
+      arg(:offset, :integer)
+      resolve(&Resolvers.QA.answers/3)
+    end
+  end
+
   @desc """
   quesions info
   """

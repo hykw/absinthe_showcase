@@ -1,7 +1,19 @@
 defmodule ShowcaseWeb.Schema.MultiTypes do
   use Absinthe.Schema.Notation
 
+  alias ShowcaseWeb.Schema.Middleware
   alias ShowcaseWeb.Resolvers
+
+  object :me_queries do
+    @desc """
+    query one's own info
+    """
+
+    field :me, :me do
+      middleware(Middleware.Authorize, :any)
+      resolve(&Resolvers.Me.me/3)
+    end
+  end
 
   @desc """
   me info(user_with_priv, questions and answers)

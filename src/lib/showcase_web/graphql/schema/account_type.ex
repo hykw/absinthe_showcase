@@ -1,7 +1,51 @@
 defmodule ShowcaseWeb.Schema.AccountTypes do
   use Absinthe.Schema.Notation
 
+  alias ShowcaseWeb.Schema.Middleware
   alias ShowcaseWeb.Resolvers
+
+  object :user_queries do
+    @desc """
+    query user info(admin accounts are excluded)
+    """
+
+    field :users, list_of(:user) do
+      arg(:id, :id)
+      arg(:nickname, :string)
+      arg(:limit, :integer)
+      arg(:offset, :integer)
+      resolve(&Resolvers.Accounts.users/3)
+    end
+  end
+
+  object :login_mutations do
+    @desc """
+    login with the params
+    """
+
+    field :login, :session do
+      arg(:email, non_null(:string))
+      arg(:password, non_null(:string))
+      arg(:permission, non_null(:permission))
+      resolve(&Resolvers.Accounts.login/3)
+    end
+  end
+
+  object :create_user_mutations do
+    @desc """
+    create user account
+    """
+
+    field :create_user, :user_with_priv_result do
+      arg(:email, non_null(:string))
+      arg(:nickname, non_null(:string))
+      arg(:password, non_null(:string))
+      arg(:permission, non_null(:permission))
+
+      middleware(Middleware.Authorize, :admin)
+      resolve(&Resolvers.Accounts.create_user/3)
+    end
+  end
 
   # suppress password
   @desc """
