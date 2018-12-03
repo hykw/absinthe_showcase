@@ -365,7 +365,6 @@ defmodule Showcase.QA do
 
   defp do_list_questions(false, query) do
     query
-    |> exclude(:select)
     |> Repo.all()
   end
 
@@ -380,7 +379,6 @@ defmodule Showcase.QA do
 
   defp do_list_answers(false, query) do
     query
-    |> exclude(:select)
     |> Repo.all()
   end
 end
