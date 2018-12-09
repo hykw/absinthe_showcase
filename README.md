@@ -4,7 +4,7 @@ This is a showcase for Absinthe
 ## Features
 
 - Battery included
-  - You can soon try in Docker Compose.
+  - You can soon try it in Docker Compose.
 - Written in the latest libraries:
   - OTP 21, Elixir 1.7.4
   - Phoenix 1.4, Ecto 3.0
