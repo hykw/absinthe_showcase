@@ -43,6 +43,9 @@ This is a showcase for Absinthe
   - users.permission: 0 = normal user, 1 = admin user
   - all tables, user, question and answer, have `total_count` field as a virtual field. In case `totalCount` is specified, the count willl be stored in the field.
 
+## GraphQL Schemas
+- [GraphQL Schema](docs/schema/index.html)
+
 ## Queries and Mutations
 - mutations
   - [login](docs/operations/mutation_login.md)
