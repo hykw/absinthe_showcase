@@ -49,4 +49,8 @@ defmodule ShowcaseWeb.Resolvers.Accounts do
       {:ok, %{user: user}}
     end
   end
+
+  def update_user(_, params, %{context: %{current_user: current_user}}) do
+    Accounts.update_user(current_user, params)
+  end
 end

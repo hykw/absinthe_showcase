@@ -47,6 +47,21 @@ defmodule ShowcaseWeb.Schema.AccountTypes do
     end
   end
 
+  object :update_user_mutations do
+    @desc """
+    update my info
+    """
+
+    field :update_user, :user_with_priv do
+      arg(:nickname, :string)
+      arg(:email, :string)
+      arg(:password, :string)
+
+      middleware(Middleware.Authorize, :any)
+      resolve(&Resolvers.Accounts.update_user/3)
+    end
+  end
+
   # suppress password
   @desc """
   users info(excludes password)

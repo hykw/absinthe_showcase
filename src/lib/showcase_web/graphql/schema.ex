@@ -23,6 +23,7 @@ defmodule ShowcaseWeb.Schema do
   mutation do
     import_fields(:login_mutations)
     import_fields(:create_user_mutations)
+    import_fields(:update_user_mutations)
   end
 
   ##################################################

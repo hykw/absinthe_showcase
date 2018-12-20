@@ -50,6 +50,7 @@ This is a showcase for Absinthe
 - mutations
   - [login](docs/operations/mutation_login.md)
   - [create user](docs/operations/mutation_create_user.md)
+  - [update user](docs/operations/mutation_update_user.md)
 
 - queries
   - [query question lists](docs/operations/query_questions.md)
